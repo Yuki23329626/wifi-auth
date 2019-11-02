@@ -2,17 +2,17 @@
 
 soft ap in ubuntu 16.04
 
-總之就是先執行腳本,在bash輸入以下指令：\r
-sh wifi-ap.sh\r
+總之就是先執行腳本,在bash輸入以下指令：
+sh wifi-ap.sh
 
-關於 shell script 內用到的檔案，\r
-都需要事先改好 network interface 的名稱\r
-在我的電腦上 wlp2s0 是在內網的 interface\r
-而 wlxf48ceb9ba387 是連接外網的 interface\r
-具體要怎麼查詢，請使用下列 command:\r
-ifconfig\r
-\r
-ip address 為 10. 或是 192. 開頭的通常會作為內網分配的 IP 使用\r
+關於 shell script 內用到的檔案，
+都需要事先改好 network interface 的名稱
+在我的電腦上 wlp2s0 是在內網的 interface
+而 wlxf48ceb9ba387 是連接外網的 interface
+具體要怎麼查詢，請使用下列 command:
+ifconfig
+
+ip address 為 10. 或是 192. 開頭的通常會作為內網分配的 IP 使用
 lo 是 localhost 的介面
 剩下的就是可以連到 internet 的介面與實體線路的介面
 實體線路不會有 IPv4 的 address 應該不難分辨
