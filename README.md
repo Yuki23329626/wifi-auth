@@ -32,5 +32,3 @@ sudo systemctl enable mysql.service
 // 進入 mysql cmd，使用'root'這個帳號，並且要輸入密碼，我是用'secret'做密碼
 // 若需要改帳號密碼，則相關的 auth.cpp 等檔案的帳密也需要修改
 mysql -u root -p
-
-
