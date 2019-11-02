@@ -6,7 +6,7 @@ soft ap in ubuntu 16.04
 ## 一個指令搞定所有安裝 + iptables 設定
 總之就是先執行腳本,在bash輸入以下指令：
 ```bash
-sh wifi-ap.sh
+sudo sh wifi-ap.sh
 ```
 
 關於 shell script 內用到的檔案，  
