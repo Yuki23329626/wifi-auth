@@ -1,0 +1,9 @@
+cp /usr/lib/cgi-bin/auth.cpp /home/nxshen/Desktop/wifi-ap/
+cp /usr/lib/cgi-bin/makefile /home/nxshen/Desktop/wifi-ap/
+cp /etc/dhcp/dhcpd.conf /home/nxshen/Desktop/wifi-ap/
+cp /etc/hostapd/hostapd.conf /home/nxshen/Desktop/wifi-ap/
+cp /var/www/html/index.html /home/nxshen/Desktop/wifi-ap/
+cp /etc/default/isc-dhcp-server /home/nxshen/Desktop/wifi-ap/
+cp /etc/dhcp/dhcpd.conf /home/nxshen/Desktop/wifi-ap/
+cp /etc/network/interfaces /home/nxshen/Desktop/wifi-ap/
+
