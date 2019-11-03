@@ -37,6 +37,7 @@ sudo ufw show
 sudo systemctl restart networking
 
 systemctl start hostapd.service 
+systemctl enable hostapd.service 
 
 iptables -P INPUT ACCEPT
 iptables -P FORWARD ACCEPT
