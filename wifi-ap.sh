@@ -13,9 +13,9 @@ sudo apt install isc-dhcp-server
 sudo apt install dnsmasq
 
 cp auth.cpp /usr/lib/cgi-bin/
-make
 cp auth.cgi /usr/lib/cgi-bin/
 cp makefile /usr/lib/cgi-bin/
+make
 cp dhcpd.conf /etc/dhcp/
 cp hostapd.conf /etc/hostapd/
 cp bookmarks.html /home/
