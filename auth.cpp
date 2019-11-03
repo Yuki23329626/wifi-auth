@@ -28,21 +28,21 @@ int main()
 {
 
     string strNames[]={
-		"DOCUMENT_ROOT",
-        "GATEWAY_INTERFACE",
-        "HTTP_HOST",
-        "REMOTE_ADDR",
-        "REMOTE_PORT",
-        "REQUEST_METHOD",
-        "REQUEST_URI",
-        "SCRIPT_FILENAME",
-        "SERVER_ADDR",
-        "SERVER_NAME",
-        "SERVER_PORT",
-        "SERVER_PROTOCOL",
-        "SERVER_SOFTWARE",
-        "QUERY_STRING",
-        "HTTP_COOKIE"
+			"DOCUMENT_ROOT",
+			"GATEWAY_INTERFACE",
+      "HTTP_HOST",
+      "REMOTE_ADDR",
+      "REMOTE_PORT",
+      "REQUEST_METHOD",
+      "REQUEST_URI",
+      "SCRIPT_FILENAME",
+      "SERVER_ADDR",
+      "SERVER_NAME",
+      "SERVER_PORT",
+      "SERVER_PROTOCOL",
+      "SERVER_SOFTWARE",
+      "QUERY_STRING",
+      "HTTP_COOKIE"
     };
 
 
