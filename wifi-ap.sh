@@ -1,6 +1,6 @@
 #!/bin/bash
 # Progra:
-# This program set up a wifi access point with a web-based authentication and also set up the iptables.
+# This program will set up a wifi access point with a web-based authentication and also set up the iptables.
 # History:
 # 2019/11/8 nxshen add several comments
 PATH=/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin:~/bin
@@ -18,6 +18,7 @@ sudo apt install dnsmasq
 cp auth.cpp /usr/lib/cgi-bin/
 cp auth.cgi /usr/lib/cgi-bin/
 cp makefile /usr/lib/cgi-bin/
+# 要先安裝完成 mysql 才能成功編譯，auth.cpp 會用到 mysql 的 c++ library
 make
 cp dhcpd.conf /etc/dhcp/
 cp hostapd.conf /etc/hostapd/
@@ -28,7 +29,7 @@ cp isc-dhcp-server /etc/default/
 cp dhcpd.conf /etc/dhcp/
 cp interfaces /etc/network/
 
-# 啟動該啟動的服務並且設為開機啟動
+# 啟動該啟動的服務們並且設為開機啟動
 systemctl start apache2.service
 systemctl enable apache2.service
 systemctl start isc-dhcp-server.service
@@ -44,8 +45,8 @@ systemctl start hostapd.service
 systemctl enable hostapd.service 
 
 # iptables 防火牆設定，有滿多是沒用的設定，本來想用類似 DNS 綁架的方式重導向驗證網頁，不知道怎麼設定~
-# 驗證網頁是: 10.10.0.1/index.html，應該也可以設定 /etc/hosts 來給他一個名字
-# 以下設定的 code 取自 wifidog iptables 設定，一樣記得修改網卡名稱
+# 驗證網頁是: 10.10.0.1/index.html，應該也可以設定 /etc/hosts 來給他一個名稱
+# 以下設定的 code 取自 wifidog iptables 設定，一樣記得修改網卡ID，內網: wlp2s0，外網: wlxf48ceb9ba387
 # Reference url: http://blog.changyy.org/2017/02/captive-portal-iptables.html
 iptables -P INPUT ACCEPT
 iptables -P FORWARD ACCEPT
