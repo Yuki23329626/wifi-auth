@@ -1,17 +1,20 @@
 #!/bin/bash
 # Progra:
-# This program is for hostapd, dhcp server and web-based login authenticaion, which is used to set iptable.
+# This program set up a wifi access point with a web-based authentication and also set up the iptables.
 # History:
-# 2019/11/2 nxshen First release
+# 2019/11/8 nxshen add several comments
 PATH=/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin:~/bin
 export PATH
-echo "\nHello there, it a shell script for establishing a wifi hot spot~\n"
+echo "\nHello there, it's a shell script for establishing a wifi access point~\n"
 
+# 安裝 lamp-server(linux 上的 apache+mysql+php 組合包)、
+# 安裝 dhcp-server(動態分配內網 IP 的 server)、dnsmasq(DNS server 貌似沒卵用)
 sudo apt update
 sudo apt install lamp-server^
 sudo apt install isc-dhcp-server
 sudo apt install dnsmasq
 
+# 把 config files 直接放到他們該在的地方，記得修改各自 config file 內的網卡名稱設定
 cp auth.cpp /usr/lib/cgi-bin/
 cp auth.cgi /usr/lib/cgi-bin/
 cp makefile /usr/lib/cgi-bin/
@@ -25,6 +28,7 @@ cp isc-dhcp-server /etc/default/
 cp dhcpd.conf /etc/dhcp/
 cp interfaces /etc/network/
 
+# 啟動該啟動的服務並且設為開機啟動
 systemctl start apache2.service
 systemctl enable apache2.service
 systemctl start isc-dhcp-server.service
@@ -39,6 +43,10 @@ sudo systemctl restart networking
 systemctl start hostapd.service 
 systemctl enable hostapd.service 
 
+# iptables 防火牆設定，有滿多是沒用的設定，本來想用類似 DNS 綁架的方式重導向驗證網頁，不知道怎麼設定~
+# 驗證網頁是: 10.10.0.1/index.html，應該也可以設定 /etc/hosts 來給他一個名字
+# 以下設定的 code 取自 wifidog iptables 設定，一樣記得修改網卡名稱
+# Reference url: http://blog.changyy.org/2017/02/captive-portal-iptables.html
 iptables -P INPUT ACCEPT
 iptables -P FORWARD ACCEPT
 iptables -P OUTPUT ACCEPT
@@ -69,6 +77,8 @@ iptables -A WD_wlan0_Unknown -p udp -m udp --dport 67 -j ACCEPT
 iptables -A WD_wlan0_Unknown -p tcp -m tcp --dport 67 -j ACCEPT
 iptables -A WD_wlan0_Unknown -j REJECT --reject-with icmp-port-unreachable
 iptables -A WD_wlan0_Validate -j ACCEPT
+
+# 允許 NAT 上的 IP 可以轉換成外部IP(規則:MASQUERADE)，與外網溝通
 iptables --table nat --append POSTROUTING --out-interface wlxf48ceb9ba387 -j MASQUERADE
 
 exit 0
