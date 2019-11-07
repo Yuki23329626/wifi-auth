@@ -18,7 +18,7 @@ sudo apt install dnsmasq
 cp auth.cpp /usr/lib/cgi-bin/
 cp auth.cgi /usr/lib/cgi-bin/
 cp makefile /usr/lib/cgi-bin/
-# 要先安裝完成 mysql 才能成功編譯，auth.cpp 會用到 mysql 的 c++ library
+# 要先安裝完成 mysql 才能成功編譯，auth.cpp 會用到 mysql 的 library
 make
 cp dhcpd.conf /etc/dhcp/
 cp hostapd.conf /etc/hostapd/
