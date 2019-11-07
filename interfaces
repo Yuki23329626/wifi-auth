@@ -2,8 +2,7 @@
 auto lo
 iface lo inet loopback
 
-#wlp2s0
-
+# 記得把 wlp2s0 改成自己要用來當內網網卡的 ID
 auto wlp2s0
 iface wlp2s0 inet static
 address 10.10.0.1
