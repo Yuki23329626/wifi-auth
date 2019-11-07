@@ -36,6 +36,7 @@ systemctl start isc-dhcp-server.service
 systemctl enable isc-dhcp-server.service
 systemctl start mysql.service
 systemctl enable mysql.service
+systemctl stop dnsmasq.service
 sudo ufw allow  67/udp
 sudo ufw reload
 sudo ufw show
