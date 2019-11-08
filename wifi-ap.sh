@@ -13,10 +13,10 @@ WAN_INTERFACE=wlxd037453d9c6a
 
 # 安裝 lamp-server(linux 上的 apache+mysql+php 組合包)、
 # 安裝 dhcp-server(動態分配內網 IP 的 server)、dnsmasq(DNS server 貌似沒卵用)
-sudo apt update
-sudo apt install lamp-server^
-sudo apt install isc-dhcp-server
-sudo apt install dnsmasq
+apt update
+apt install lamp-server^
+apt install isc-dhcp-server
+apt install dnsmasq
 
 # 把 config files 直接放到他們該在的地方，記得修改各自 config file 內的網卡名稱設定
 cp auth.cpp /usr/lib/cgi-bin/
