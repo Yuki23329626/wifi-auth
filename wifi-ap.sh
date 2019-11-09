@@ -89,8 +89,8 @@ systemctl start isc-dhcp-server.service
 systemctl enable isc-dhcp-server.service
 systemctl start mysql.service
 systemctl enable mysql.service
-systemctl start dnsmasq.service
-systemctl enable dnsmasq.service
+#systemctl start dnsmasq.service
+#systemctl enable dnsmasq.service
 sudo ufw allow  67/udp
 sudo ufw reload
 #sudo systemctl restart networking
@@ -98,9 +98,6 @@ sudo service network-manager stop
 sudo service network-manager start
 
 #dnsmasq /etc/dnsmasq.conf
-
-systemctl start hostapd.service
-systemctl enable hostapd.service
 
 sudo a2enmod cgi
 sudo service apache2 restart
