@@ -1,11 +1,12 @@
 # wifi-auth
 
 soft ap in ubuntu 16.04  
+需要兩張網卡，一張給內網、一張給外網  
+
 學校筆電因為裝了 nvidia 顯卡，ubuntu 16.x 會卡開機畫面
 解決方法：https://itsfoss.com/fix-ubuntu-freezing/  
 1. 進到開機 USB 選單，press 'e' 進入 grub 畫面
 2. 編輯開頭是 linux 的那一行，最後面加上 "nomodeset" 這個字串  
-需要兩張網卡，一張給內網、一張給外網
 
 ## 1. 一個指令搞定所有安裝 + iptables 設定
 
