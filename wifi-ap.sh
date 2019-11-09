@@ -11,12 +11,40 @@ echo "\nHello there, it's a shell script for establishing a wifi access point~\n
 LAN_INTERFACE=wlp2s0
 WAN_INTERFACE=wlxd037453d9c6a
 
-# 安裝 lamp-server(linux 上的 apache+mysql+php 組合包)、
+echo "\n-- checking for necessary packages --\n"
+
+# 安裝 apache2、mysql-server(也可以直接安裝 lamp-server^)、
 # 安裝 dhcp-server(動態分配內網 IP 的 server)、dnsmasq(DNS server 貌似沒卵用)
-sudo apt update
-sudo apt install lamp-server^
-sudo apt install isc-dhcp-server
-sudo apt install dnsmasq
+PKG_OK=$(dpkg-query -W --showformat='${Status}\n' apache2|grep "install ok installed")
+echo Checking for apache2: $PKG_OK
+if [ "" = "$PKG_OK" ]
+then
+  echo "Have not installed. Start installing..."
+  sudo apt install apache2
+fi
+PKG_OK=$(dpkg-query -W --showformat='${Status}\n' mysql-server|grep "install ok installed")
+echo Checking for mysql-server: $PKG_OK
+if [ "" = "$PKG_OK" ]
+then
+  echo "Have not installed. Start installing..."
+  sudo apt install mysql
+fi
+PKG_OK=$(dpkg-query -W --showformat='${Status}\n' isc-dhcp-server|grep "install ok installed")
+echo Checking for isc-dhcp-server: $PKG_OK
+if [ "" = "$PKG_OK" ]
+then
+  echo "Have not installed. Start installing..."
+  sudo apt install isc-dhcp-server
+fi
+PKG_OK=$(dpkg-query -W --showformat='${Status}\n' dnsmasq|grep "install ok installed")
+echo Checking for dnsmasq: $PKG_OK
+if [ "" = "$PKG_OK" ]
+then
+  echo "Have not installed. Start installing..."
+  sudo apt install dnsmasq
+fi
+
+echo "\n-- start copying files --\n"
 
 # 把 config files 直接放到他們該在的地方，記得修改各自 config file 內的網卡名稱設定
 cp auth.cpp /usr/lib/cgi-bin/
@@ -33,7 +61,10 @@ cp isc-dhcp-server /etc/default/
 cp dhcpd.conf /etc/dhcp/
 cp interfaces /etc/network/
 
+echo "\n-- start and enable services --\n"
+
 # 啟動該啟動的服務們並且設為開機啟動
+ifconfig $LAN_INTERFACE 10.10.0.1/24 up
 systemctl start apache2.service
 systemctl enable apache2.service
 systemctl start isc-dhcp-server.service
@@ -43,7 +74,6 @@ systemctl enable mysql.service
 systemctl stop dnsmasq.service
 sudo ufw allow  67/udp
 sudo ufw reload
-sudo ufw show
 sudo systemctl restart networking
 
 systemctl start hostapd.service 
@@ -53,6 +83,12 @@ systemctl enable hostapd.service
 # 驗證網頁是: 10.10.0.1/index.html，應該也可以設定 /etc/hosts 來給他一個名稱
 # 以下設定的 code 取自 wifidog iptables 設定，一樣記得修改網卡ID
 # Reference url: http://blog.changyy.org/2017/02/captive-portal-iptables.html
+iptables -Z
+iptables -F
+iptables -X
+iptables -t nat -Z
+iptables -t nat -F
+iptables -t nat -X
 iptables -P INPUT ACCEPT
 iptables -P FORWARD ACCEPT
 iptables -P OUTPUT ACCEPT
@@ -63,12 +99,12 @@ iptables -N WD_wlan0_Known
 iptables -N WD_wlan0_Locked
 iptables -N WD_wlan0_Unknown
 iptables -N WD_wlan0_Validate
-iptables -A FORWARD -i WAN_INTERFACE -j WD_wlan0_Internet
-iptables -A FORWARD -i LAN_INTERFACE -o WAN_INTERFACE -m state --state RELATED,ESTABLISHED -j ACCEPT
-iptables -A FORWARD -i WAN_INTERFACE -o LAN_INTERFACE -j ACCEPT
+iptables -A FORWARD -i $WAN_INTERFACE -j WD_wlan0_Internet
+iptables -A FORWARD -i $LAN_INTERFACE -o $WAN_INTERFACE -m state --state RELATED,ESTABLISHED -j ACCEPT
+iptables -A FORWARD -i $WAN_INTERFACE -o $LAN_INTERFACE -j ACCEPT
 iptables -A WD_wlan0_AuthServs -d 10.10.0.1/32 -j ACCEPT
 iptables -A WD_wlan0_Internet -m state --state INVALID -j DROP
-iptables -A WD_wlan0_Internet -o LAN_INTERFACE -p tcp -m tcp --tcp-flags SYN,RST SYN -j TCPMSS --clamp-mss-to-pmtu
+iptables -A WD_wlan0_Internet -o $LAN_INTERFACE -p tcp -m tcp --tcp-flags SYN,RST SYN -j TCPMSS --clamp-mss-to-pmtu
 iptables -A WD_wlan0_Internet -j WD_wlan0_AuthServs
 iptables -A WD_wlan0_Internet -m mark --mark 0x254 -j WD_wlan0_Locked
 iptables -A WD_wlan0_Internet -j WD_wlan0_Global
@@ -85,6 +121,8 @@ iptables -A WD_wlan0_Unknown -j REJECT --reject-with icmp-port-unreachable
 iptables -A WD_wlan0_Validate -j ACCEPT
 
 # 允許 NAT 上的 IP 可以轉換成外部IP(規則:MASQUERADE)，與外網溝通
-iptables --table nat --append POSTROUTING --out-interface WAN_INTERFACE -j MASQUERADE
+iptables --table nat --append POSTROUTING --out-interface $WAN_INTERFACE -j MASQUERADE
+
+hostapd /etc/hostapd/hostapd.conf
 
 exit 0
