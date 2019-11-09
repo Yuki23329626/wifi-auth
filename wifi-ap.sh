@@ -97,7 +97,8 @@ sudo ufw reload
 sudo service network-manager stop
 sudo service network-manager start
 
-#dnsmasq /etc/dnsmasq.conf
+sudo service dnsmasq stop
+dnsmasq
 
 sudo a2enmod cgi
 sudo service apache2 restart
@@ -122,12 +123,12 @@ iptables -N WD_wlan0_Known
 iptables -N WD_wlan0_Locked
 iptables -N WD_wlan0_Unknown
 iptables -N WD_wlan0_Validate
-iptables -A FORWARD -i $WAN_INTERFACE -j WD_wlan0_Internet
-iptables -A FORWARD -i $LAN_INTERFACE -o $WAN_INTERFACE -m state --state RELATED,ESTABLISHED -j ACCEPT
-iptables -A FORWARD -i $WAN_INTERFACE -o $LAN_INTERFACE -j ACCEPT
+iptables -A FORWARD -i wlxf48ceb9ba387 -j WD_wlan0_Internet
+iptables -A FORWARD -i wlp2s0 -o wlxd037453d9c6a -m state --state RELATED,ESTABLISHED -j ACCEPT
+iptables -A FORWARD -i wlxd037453d9c6a -o wlp2s0 -j ACCEPT
 iptables -A WD_wlan0_AuthServs -d 10.10.0.1/32 -j ACCEPT
 iptables -A WD_wlan0_Internet -m state --state INVALID -j DROP
-iptables -A WD_wlan0_Internet -o $LAN_INTERFACE -p tcp -m tcp --tcp-flags SYN,RST SYN -j TCPMSS --clamp-mss-to-pmtu
+iptables -A WD_wlan0_Internet -o wlp2s0 -p tcp -m tcp --tcp-flags SYN,RST SYN -j TCPMSS --clamp-mss-to-pmtu
 iptables -A WD_wlan0_Internet -j WD_wlan0_AuthServs
 iptables -A WD_wlan0_Internet -m mark --mark 0x254 -j WD_wlan0_Locked
 iptables -A WD_wlan0_Internet -j WD_wlan0_Global
@@ -142,9 +143,11 @@ iptables -A WD_wlan0_Unknown -p udp -m udp --dport 67 -j ACCEPT
 iptables -A WD_wlan0_Unknown -p tcp -m tcp --dport 67 -j ACCEPT
 iptables -A WD_wlan0_Unknown -j REJECT --reject-with icmp-port-unreachable
 iptables -A WD_wlan0_Validate -j ACCEPT
+iptables --table nat --append POSTROUTING --out-interface wlxd037453d9c6a -j MASQUERADE
+
 
 # 允許 NAT 上的 IP 可以轉換成外部IP(規則:MASQUERADE)，與外網溝通
-iptables --table nat --append POSTROUTING --out-interface $WAN_INTERFACE -j MASQUERADE
+iptables --table nat --append POSTROUTING --out-interface wlxd037453d9c6a -j MASQUERADE
 
 hostapd /etc/hostapd/hostapd.conf
 

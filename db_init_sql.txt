@@ -16,3 +16,4 @@ INSERT INTO `user` (`id`, `name`, `password`) VALUES
 (4,	'user004',	'004004'),
 (5,	'user005',	'005005'),
 (6,	'user006',	'006006');
+

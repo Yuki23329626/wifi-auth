@@ -1,3 +1,9 @@
+iptables -Z
+iptables -F
+iptables -X
+iptables -t nat -Z
+iptables -t nat -F
+iptables -t nat -X
 iptables -P INPUT ACCEPT
 iptables -P FORWARD ACCEPT
 iptables -P OUTPUT ACCEPT
@@ -30,12 +36,6 @@ iptables -A WD_wlan0_Unknown -j REJECT --reject-with icmp-port-unreachable
 iptables -A WD_wlan0_Validate -j ACCEPT
 iptables --table nat --append POSTROUTING --out-interface wlxd037453d9c6a -j MASQUERADE
 
-iptables -Z
-iptables -F
-iptables -X
-iptables -t nat -Z
-iptables -t nat -F
-iptables -t nat -X
 
 iptables --table nat -I POSTROUTING --out-interface wlxd037453d9c6a -j MASQUERADE
 
