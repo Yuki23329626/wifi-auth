@@ -39,7 +39,7 @@ wlp2s0 是我內網網卡的 ID，新電腦可能都一樣，舊電腦可能會�
 
 ## 2. 安裝 mysql
 
-mysql的部份需要手動安裝  
+mysql的部份可以手動安裝  
 ```bash
 sudo apt install mysql  
 ```
