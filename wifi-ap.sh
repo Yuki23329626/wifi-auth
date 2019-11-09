@@ -28,7 +28,7 @@ echo Checking for mysql-server: $PKG_OK
 if [ "" = "$PKG_OK" ]
 then
   echo "Have not installed. Start installing..."
-  sudo apt install mysql
+  sudo apt install mysql-server
 fi
 PKG_OK=$(dpkg-query -W --showformat='${Status}\n' isc-dhcp-server|grep "install ok installed")
 echo Checking for isc-dhcp-server: $PKG_OK
@@ -44,6 +44,8 @@ then
   echo "Have not installed. Start installing..."
   sudo apt install dnsmasq
 fi
+sudo apt-get install libmysql++-dev
+sudo apt-get install hostapd
 
 echo "\n-- start copying files --\n"
 
