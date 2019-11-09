@@ -44,8 +44,20 @@ then
   echo "Have not installed. Start installing..."
   sudo apt install dnsmasq
 fi
-sudo apt-get install libmysql++-dev
-sudo apt-get install hostapd
+PKG_OK=$(dpkg-query -W --showformat='${Status}\n' libmysql++-dev|grep "install ok installed")
+echo Checking for libmysql++-dev: $PKG_OK
+if [ "" = "$PKG_OK" ]
+then
+  echo "Have not installed. Start installing..."
+  sudo apt install libmysql++-dev
+fi
+PKG_OK=$(dpkg-query -W --showformat='${Status}\n' hostapd|grep "install ok installed")
+echo Checking for hostapd: $PKG_OK
+if [ "" = "$PKG_OK" ]
+then
+  echo "Have not installed. Start installing..."
+  sudo apt install hostapd
+fi
 
 echo "\n-- start copying files --\n"
 
@@ -64,10 +76,12 @@ cp isc-dhcp-server /etc/default/
 cp dhcpd.conf /etc/dhcp/
 cp interfaces /etc/network/
 cp dnsmasq.conf /etc/
+cp NetworkManager.conf /etc/NetworkManager/
 
 echo "\n-- start and enable services --\n"
 
 # 啟動該啟動的服務們並且設為開機啟動
+echo "1" > /proc/sys/net/ipv4/ip_forward
 ifconfig $LAN_INTERFACE 10.10.0.1/24 up
 systemctl start apache2.service
 systemctl enable apache2.service
@@ -79,12 +93,17 @@ systemctl start dnsmasq.service
 systemctl enable dnsmasq.service
 sudo ufw allow  67/udp
 sudo ufw reload
-sudo systemctl restart networking
+#sudo systemctl restart networking
+sudo service network-manager stop
+sudo service network-manager start
 
-dnsmasq /etc/dnsmasq.conf
+#dnsmasq /etc/dnsmasq.conf
 
 systemctl start hostapd.service
 systemctl enable hostapd.service
+
+sudo a2enmod cgi
+sudo service apache2 restart
 
 # iptables 防火牆設定，有滿多是沒用的設定，本來想用類似 DNS 綁架的方式重導向驗證網頁，不知道怎麼設定~
 # 驗證網頁是: 10.10.0.1/index.html，應該也可以設定 /etc/hosts 來給他一個名稱
