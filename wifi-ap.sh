@@ -21,21 +21,21 @@ echo Checking for apache2: $PKG_OK
 if [ "" = "$PKG_OK" ]
 then
   echo "Have not installed. Start installing..."
-  sudo apt install apache2
+  sudo apt install -y apache2
 fi
 PKG_OK=$(dpkg-query -W --showformat='${Status}\n' mysql-server|grep "install ok installed")
 echo Checking for mysql-server: $PKG_OK
 if [ "" = "$PKG_OK" ]
 then
   echo "Have not installed. Start installing..."
-  sudo apt install mysql-server
+  sudo apt install -y mysql-server
 fi
 PKG_OK=$(dpkg-query -W --showformat='${Status}\n' isc-dhcp-server|grep "install ok installed")
 echo Checking for isc-dhcp-server: $PKG_OK
 if [ "" = "$PKG_OK" ]
 then
   echo "Have not installed. Start installing..."
-  sudo apt install isc-dhcp-server
+  sudo apt install -y isc-dhcp-server
 fi
 #PKG_OK=$(dpkg-query -W --showformat='${Status}\n' dnsmasq|grep "install ok installed")
 #echo Checking for dnsmasq: $PKG_OK
@@ -49,14 +49,14 @@ echo Checking for libmysql++-dev: $PKG_OK
 if [ "" = "$PKG_OK" ]
 then
   echo "Have not installed. Start installing..."
-  sudo apt install libmysql++-dev
+  sudo apt install -y libmysql++-dev
 fi
 PKG_OK=$(dpkg-query -W --showformat='${Status}\n' hostapd|grep "install ok installed")
 echo Checking for hostapd: $PKG_OK
 if [ "" = "$PKG_OK" ]
 then
   echo "Have not installed. Start installing..."
-  sudo apt install hostapd
+  sudo apt install -y hostapd
 fi
 
 echo "\n-- start copying files --\n"
