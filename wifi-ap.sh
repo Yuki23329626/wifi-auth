@@ -14,7 +14,7 @@ WAN_INTERFACE=wlxd037453d9c6a
 echo "\n-- checking for necessary packages --\n"
 
 # 安裝 apache2、mysql-server(也可以直接安裝 lamp-server^)、
-# 安裝 dhcp-server(動態分配內網 IP 的 server)、dnsmasq(DNS server 貌似沒卵用)
+# 安裝 dhcp-server(動態分配內網 IP 的 server)、dnsmasq(DNS server)
 
 PKG_OK=$(dpkg-query -W --showformat='${Status}\n' apache2|grep "install ok installed")
 echo Checking for apache2: $PKG_OK
@@ -61,6 +61,7 @@ cp index.html /var/www/html/
 cp isc-dhcp-server /etc/default/
 cp dhcpd.conf /etc/dhcp/
 cp interfaces /etc/network/
+cp dnsmasq.conf /etc/
 
 echo "\n-- start and enable services --\n"
 
@@ -72,13 +73,16 @@ systemctl start isc-dhcp-server.service
 systemctl enable isc-dhcp-server.service
 systemctl start mysql.service
 systemctl enable mysql.service
-systemctl stop dnsmasq.service
+systemctl start dnsmasq.service
+systemctl enable dnsmasq.service
 sudo ufw allow  67/udp
 sudo ufw reload
 sudo systemctl restart networking
 
-systemctl start hostapd.service 
-systemctl enable hostapd.service 
+dnsmasq /etc/dnsmasq.conf
+
+systemctl start hostapd.service
+systemctl enable hostapd.service
 
 # iptables 防火牆設定，有滿多是沒用的設定，本來想用類似 DNS 綁架的方式重導向驗證網頁，不知道怎麼設定~
 # 驗證網頁是: 10.10.0.1/index.html，應該也可以設定 /etc/hosts 來給他一個名稱
