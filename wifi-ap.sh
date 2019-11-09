@@ -37,13 +37,13 @@ then
   echo "Have not installed. Start installing..."
   sudo apt install isc-dhcp-server
 fi
-PKG_OK=$(dpkg-query -W --showformat='${Status}\n' dnsmasq|grep "install ok installed")
-echo Checking for dnsmasq: $PKG_OK
-if [ "" = "$PKG_OK" ]
-then
-  echo "Have not installed. Start installing..."
-  sudo apt install dnsmasq
-fi
+#PKG_OK=$(dpkg-query -W --showformat='${Status}\n' dnsmasq|grep "install ok installed")
+#echo Checking for dnsmasq: $PKG_OK
+#if [ "" = "$PKG_OK" ]
+#then
+#  echo "Have not installed. Start installing..."
+#  sudo apt install dnsmasq
+#fi
 PKG_OK=$(dpkg-query -W --showformat='${Status}\n' libmysql++-dev|grep "install ok installed")
 echo Checking for libmysql++-dev: $PKG_OK
 if [ "" = "$PKG_OK" ]
@@ -67,22 +67,22 @@ cp auth.cgi /usr/lib/cgi-bin/
 cp makefile /usr/lib/cgi-bin/
 # 要先安裝完成 mysql 才能成功編譯，auth.cpp 會用到 mysql 的 library
 make
-cp dhcpd.conf /etc/dhcp/
-cp hostapd.conf /etc/hostapd/
-cp bookmarks.html /home/
-cp setIptables /home/
-cp index.html /var/www/html/
-cp isc-dhcp-server /etc/default/
-cp dhcpd.conf /etc/dhcp/
-cp interfaces /etc/network/
-cp dnsmasq.conf /etc/
-cp NetworkManager.conf /etc/NetworkManager/
+sudo cp dhcpd.conf /etc/dhcp/
+sudo cp hostapd.conf /etc/hostapd/
+sudo cp bookmarks.html /home/
+sudo cp setIptables /home/
+sudo cp index.html /var/www/html/
+sudo cp isc-dhcp-server /etc/default/
+sudo cp dhcpd.conf /etc/dhcp/
+sudo cp interfaces /etc/network/
+sudo cp dnsmasq.conf /etc/
+sudo cp NetworkManager.conf /etc/NetworkManager/
 
 echo "\n-- start and enable services --\n"
 
 # 啟動該啟動的服務們並且設為開機啟動
-echo "1" > /proc/sys/net/ipv4/ip_forward
-ifconfig $LAN_INTERFACE 10.10.0.1/24 up
+sudo echo "1" > /proc/sys/net/ipv4/ip_forward
+sudo ifconfig $LAN_INTERFACE 10.10.0.1/24 up
 systemctl start apache2.service
 systemctl enable apache2.service
 systemctl start isc-dhcp-server.service
@@ -97,8 +97,7 @@ sudo ufw reload
 sudo service network-manager stop
 sudo service network-manager start
 
-#sudo service dnsmasq stop
-#dnsmasq
+#sudo /etc/init.d/dnsmasq restart
 
 sudo a2enmod cgi
 sudo service apache2 restart
