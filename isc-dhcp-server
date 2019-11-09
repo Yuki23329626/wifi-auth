@@ -1,3 +1,6 @@
+# 記得把 INTERFACES 改成自己要用來當內網網卡的 ID
+INTERFACES="wlp2s0"
+
 # Defaults for isc-dhcp-server initscript
 # sourced by /etc/init.d/isc-dhcp-server
 # installed at /etc/default/isc-dhcp-server by the maintainer scripts
@@ -19,4 +22,4 @@
 # On what interfaces should the DHCP server (dhcpd) serve DHCP requests?
 #	Separate multiple interfaces with spaces, e.g. "eth0 eth1".
 
-INTERFACES="wlp2s0"
+# INTERFACES="wlp2s0"

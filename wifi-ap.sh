@@ -15,6 +15,7 @@ echo "\n-- checking for necessary packages --\n"
 
 # 安裝 apache2、mysql-server(也可以直接安裝 lamp-server^)、
 # 安裝 dhcp-server(動態分配內網 IP 的 server)、dnsmasq(DNS server 貌似沒卵用)
+<<<<<<< HEAD
 PKG_OK=$(dpkg-query -W --showformat='${Status}\n' apache2|grep "install ok installed")
 echo Checking for apache2: $PKG_OK
 if [ "" = "$PKG_OK" ]
@@ -45,6 +46,12 @@ then
 fi
 
 echo "\n-- start copying files --\n"
+=======
+apt update
+apt install lamp-server^
+apt install isc-dhcp-server
+apt install dnsmasq
+>>>>>>> 6de1309d09b27a04f00f583d427b243f4071755c
 
 # 把 config files 直接放到他們該在的地方，記得修改各自 config file 內的網卡名稱設定
 cp auth.cpp /usr/lib/cgi-bin/
