@@ -120,6 +120,8 @@ int main()
 					string strRemoteAddr(getenv(varNames[3].c_str()));
 					string str1 = "sudo iptables -I FORWARD -s " + strRemoteAddr + "-j MARK --set-mark 0x1";
 					string str2 = "sudo iptables -I FORWARD -d " + strRemoteAddr + "-j MARK --set-mark 0x1";
+					cout << "<BR> str1 = " + str1 + "<BR>";
+					cout << "<BR> str2 = " + str2 + "<BR>";
 					const char* cmd1 = str1.c_str();
 					const char* cmd2 = str2.c_str();
 					system(cmd1);
