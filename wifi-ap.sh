@@ -97,7 +97,7 @@ sudo ufw reload
 sudo service network-manager stop
 sudo service network-manager start
 
-#sudo /etc/init.d/dnsmasq restart
+sudo /etc/init.d/dnsmasq restart
 
 sudo a2enmod cgi
 sudo service apache2 restart
