@@ -142,7 +142,6 @@ iptables -A WD_wlan0_Unknown -p udp -m udp --dport 67 -j ACCEPT
 iptables -A WD_wlan0_Unknown -p tcp -m tcp --dport 67 -j ACCEPT
 iptables -A WD_wlan0_Unknown -j REJECT --reject-with icmp-port-unreachable
 iptables -A WD_wlan0_Validate -j ACCEPT
-iptables --table nat --append POSTROUTING --out-interface $WAN_INTERFACE -j MASQUERADE
 
 
 # 允許 NAT 上的 IP 可以轉換成外部IP(規則:MASQUERADE)，與外網溝通
