@@ -75,7 +75,7 @@ sudo cp index.html /var/www/html/
 sudo cp isc-dhcp-server /etc/default/
 sudo cp dhcpd.conf /etc/dhcp/
 sudo cp interfaces /etc/network/
-sudo cp dnsmasq.conf /etc/
+#sudo cp dnsmasq.conf /etc/
 sudo cp NetworkManager.conf /etc/NetworkManager/
 
 echo "\n-- start and enable services --\n"
