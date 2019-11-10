@@ -126,10 +126,10 @@ int main()
 					const char* cmd2 = str2.c_str();
 					int return1 = system(cmd1);
 					int return2 = system(cmd2);
-					int return3 = system("ls");
-					cout << "<BR>system(cmd1) retruns " << return1 << "<BR>";
-					cout << "<BR>system(cmd2) returns " << return2 << "<BR>";
-					cout << "<BR>system(cmd3) returns " << return3 << "<BR>";
+					int return3 = system("echo 1");
+					cout << "<BR>system(cmd1) retruns " << WEXITSTATUS( return1 ) << "<BR>";
+					cout << "<BR>system(cmd2) returns " << WEXITSTATUS( return2 ) << "<BR>";
+					cout << "<BR>system(cmd3) returns " << WEXITSTATUS( return3 ) << "<BR>";
 				}else{
 					cout << "<BR>login failed!<BR>";
 				}
