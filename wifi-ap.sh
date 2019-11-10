@@ -16,6 +16,13 @@ echo "\n-- checking for necessary packages --\n"
 # 安裝 apache2、mysql-server(也可以直接安裝 lamp-server^)、
 # 安裝 dhcp-server(動態分配內網 IP 的 server)、dnsmasq(DNS server)
 
+# PKG_OK=$(dpkg-query -W --showformat='${Status}\n' lamp-server^|grep "install ok installed")
+# echo Checking for lamp-server^: $PKG_OK
+# if [ "" = "$PKG_OK" ]
+# then
+#   echo "Have not installed. Start installing..."
+#   sudo apt install lamp-server^
+# fi
 PKG_OK=$(dpkg-query -W --showformat='${Status}\n' apache2|grep "install ok installed")
 echo Checking for apache2: $PKG_OK
 if [ "" = "$PKG_OK" ]
