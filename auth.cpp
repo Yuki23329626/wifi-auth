@@ -118,8 +118,8 @@ int main()
 				if((iterPass->second) == (sql_row[2])){
 					cout << "<BR>login success!<BR>";
 					string strRemoteAddr(getenv(varNames[3].c_str()));
-					string str1 = "sudo iptables -I FORWARD -s " + strRemoteAddr + "-j ACCEPT";
-					string str2 = "sudo iptables -I FORWARD -d " + strRemoteAddr + "-j ACCEPT";
+					string str1 = "sudo iptables -I FORWARD -s " + strRemoteAddr + " -j ACCEPT";
+					string str2 = "sudo iptables -I FORWARD -d " + strRemoteAddr + " -j ACCEPT";
 					cout << "<BR> str1 = " + str1 + "<BR>";
 					cout << "<BR> str2 = " + str2 + "<BR>";
 					const char* cmd1 = str1.c_str();
