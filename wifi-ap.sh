@@ -37,13 +37,13 @@ then
   echo "Have not installed. Start installing..."
   sudo apt install -y isc-dhcp-server
 fi
-PKG_OK=$(dpkg-query -W --showformat='${Status}\n' dnsmasq|grep "install ok installed")
-echo Checking for dnsmasq: $PKG_OK
-if [ "" = "$PKG_OK" ]
-then
-  echo "Have not installed. Start installing..."
-  sudo apt install dnsmasq
-fi
+#PKG_OK=$(dpkg-query -W --showformat='${Status}\n' dnsmasq|grep "install ok installed")
+#echo Checking for dnsmasq: $PKG_OK
+#if [ "" = "$PKG_OK" ]
+#then
+#  echo "Have not installed. Start installing..."
+#  sudo apt install dnsmasq
+#fi
 PKG_OK=$(dpkg-query -W --showformat='${Status}\n' libmysql++-dev|grep "install ok installed")
 echo Checking for libmysql++-dev: $PKG_OK
 if [ "" = "$PKG_OK" ]
@@ -97,7 +97,7 @@ sudo ufw reload
 sudo service network-manager stop
 sudo service network-manager start
 
-sudo /etc/init.d/dnsmasq restart
+#sudo /etc/init.d/dnsmasq restart
 
 sudo a2enmod cgi
 sudo service apache2 restart
