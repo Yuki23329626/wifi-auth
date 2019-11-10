@@ -8,6 +8,8 @@ soft ap in ubuntu 16.04
 1. 進到開機 USB 選單，press 'e' 進入 grub 畫面
 2. 編輯開頭是 linux 的那一行，最後面加上 "nomodeset" 這個字串  
 
+個人建議不要用 ubuntu 18.x 的版本來練習，各種神奇的 features  
+
 ## 1. 一個指令搞定所有安裝 + iptables 設定
 
 總之就是先執行腳本,在bash輸入以下指令：
