@@ -124,8 +124,10 @@ int main()
 					cout << "<BR> str2 = " + str2 + "<BR>";
 					const char* cmd1 = str1.c_str();
 					const char* cmd2 = str2.c_str();
-					system(cmd1);
-					system(cmd2);
+					int return1 = system(cmd1);
+					int return2 = system(cmd2);
+					cout << "<BR>system(cmd1) retruns " << return1 << "<BR>";
+					cout << "<BR>system(cmd2) returns " << return2 << "<BR>";
 				}else{
 					cout << "<BR>login failed!<BR>";
 				}
