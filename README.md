@@ -39,20 +39,18 @@ lo 是 localhost 的介面
 以上檔案都需要設定內網網卡 ID，只有 wifi-ap.sh 需要再設定外網網卡 ID  
 wlp2s0 是我內網網卡的 ID，新電腦可能都一樣，舊電腦可能會叫做 wlan0 之類的  
 
-## 2. 安裝 mysql
+## 2. apache 權限設定
 
-mysql的部份可以手動安裝  
+apache 部份檔案需要手動設定  
 ```bash
-sudo apt install mysql  
+sudo visudo
 ```
 
-帳密我是用 root 跟 secret 做帳密  
-
-開機啟動mysql服務  
+在檔案裡加上這一行:  
 ```bash
-sudo systemctl start mysql.service
-sudo systemctl enable mysql.service
+www-data  ALL=(ALL)NOPASSWD:/sbin/iptables
 ```
+
 ## 3. 匯入 mysql 資料
 
 匯入資料的 SQL 請參照 repository 內的 'db_init_sql.txt' 檔案內容  
