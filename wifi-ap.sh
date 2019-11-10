@@ -74,6 +74,7 @@ cp auth.cgi /usr/lib/cgi-bin/
 cp makefile /usr/lib/cgi-bin/
 # 要先安裝完成 mysql 才能成功編譯，auth.cpp 會用到 mysql 的 library
 make
+sudo cp envvars /etc/apache2/
 sudo cp dhcpd.conf /etc/dhcp/
 sudo cp hostapd.conf /etc/hostapd/
 sudo cp bookmarks.html /home/
