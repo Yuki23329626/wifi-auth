@@ -112,36 +112,38 @@ iptables -X
 iptables -t nat -Z
 iptables -t nat -F
 iptables -t nat -X
-iptables -P INPUT ACCEPT
-iptables -P FORWARD ACCEPT
-iptables -P OUTPUT ACCEPT
-iptables -N WD_wlan0_AuthServs
-iptables -N WD_wlan0_Global
-iptables -N WD_wlan0_Internet
-iptables -N WD_wlan0_Known
-iptables -N WD_wlan0_Locked
-iptables -N WD_wlan0_Unknown
-iptables -N WD_wlan0_Validate
-iptables -A FORWARD -i wlxf48ceb9ba387 -j WD_wlan0_Internet
-iptables -A FORWARD -i $LAN_INTERFACE -o $WAN_INTERFACE -m state --state RELATED,ESTABLISHED -j ACCEPT
-iptables -A FORWARD -i $WAN_INTERFACE -o $LAN_INTERFACE -j ACCEPT
-iptables -A WD_wlan0_AuthServs -d 10.10.0.1/32 -j ACCEPT
-iptables -A WD_wlan0_Internet -m state --state INVALID -j DROP
-iptables -A WD_wlan0_Internet -o $LAN_INTERFACE -p tcp -m tcp --tcp-flags SYN,RST SYN -j TCPMSS --clamp-mss-to-pmtu
-iptables -A WD_wlan0_Internet -j WD_wlan0_AuthServs
-iptables -A WD_wlan0_Internet -m mark --mark 0x254 -j WD_wlan0_Locked
-iptables -A WD_wlan0_Internet -j WD_wlan0_Global
-iptables -A WD_wlan0_Internet -m mark --mark 0x1 -j WD_wlan0_Validate
-iptables -A WD_wlan0_Internet -m mark --mark 0x2 -j WD_wlan0_Known
-iptables -A WD_wlan0_Internet -j WD_wlan0_Unknown
-iptables -A WD_wlan0_Known -j ACCEPT
-iptables -A WD_wlan0_Locked -j REJECT --reject-with icmp-port-unreachable
-iptables -A WD_wlan0_Unknown -p udp -m udp --dport 53 -j ACCEPT
-iptables -A WD_wlan0_Unknown -p tcp -m tcp --dport 53 -j ACCEPT
-iptables -A WD_wlan0_Unknown -p udp -m udp --dport 67 -j ACCEPT
-iptables -A WD_wlan0_Unknown -p tcp -m tcp --dport 67 -j ACCEPT
-iptables -A WD_wlan0_Unknown -j REJECT --reject-with icmp-port-unreachable
-iptables -A WD_wlan0_Validate -j ACCEPT
+# iptables -P INPUT ACCEPT
+# iptables -P FORWARD ACCEPT
+# iptables -P OUTPUT ACCEPT
+# iptables -N WD_wlan0_AuthServs
+# iptables -N WD_wlan0_Global
+# iptables -N WD_wlan0_Internet
+# iptables -N WD_wlan0_Known
+# iptables -N WD_wlan0_Locked
+# iptables -N WD_wlan0_Unknown
+# iptables -N WD_wlan0_Validate
+# iptables -A FORWARD -i wlxf48ceb9ba387 -j WD_wlan0_Internet
+# iptables -A FORWARD -i $LAN_INTERFACE -o $WAN_INTERFACE -m state --state RELATED,ESTABLISHED -j ACCEPT
+# iptables -A FORWARD -i $WAN_INTERFACE -o $LAN_INTERFACE -j ACCEPT
+# iptables -A WD_wlan0_AuthServs -d 10.10.0.1/32 -j ACCEPT
+# iptables -A WD_wlan0_Internet -m state --state INVALID -j DROP
+# iptables -A WD_wlan0_Internet -o $LAN_INTERFACE -p tcp -m tcp --tcp-flags SYN,RST SYN -j TCPMSS --clamp-mss-to-pmtu
+# iptables -A WD_wlan0_Internet -j WD_wlan0_AuthServs
+# iptables -A WD_wlan0_Internet -m mark --mark 0x254 -j WD_wlan0_Locked
+# iptables -A WD_wlan0_Internet -j WD_wlan0_Global
+# iptables -A WD_wlan0_Internet -m mark --mark 0x1 -j WD_wlan0_Validate
+# iptables -A WD_wlan0_Internet -m mark --mark 0x2 -j WD_wlan0_Known
+# iptables -A WD_wlan0_Internet -j WD_wlan0_Unknown
+# iptables -A WD_wlan0_Known -j ACCEPT
+# iptables -A WD_wlan0_Locked -j REJECT --reject-with icmp-port-unreachable
+# iptables -A WD_wlan0_Unknown -p udp -m udp --dport 53 -j ACCEPT
+# iptables -A WD_wlan0_Unknown -p tcp -m tcp --dport 53 -j ACCEPT
+# iptables -A WD_wlan0_Unknown -p udp -m udp --dport 67 -j ACCEPT
+# iptables -A WD_wlan0_Unknown -p tcp -m tcp --dport 67 -j ACCEPT
+# iptables -A WD_wlan0_Unknown -j REJECT --reject-with icmp-port-unreachable
+# iptables -A WD_wlan0_Validate -j ACCEPT
+
+iptables -A FORWARD -o $WAN_INTERFACE -j REJECT
 
 
 # 允許 NAT 上的 IP 可以轉換成外部IP(規則:MASQUERADE)，與外網溝通
