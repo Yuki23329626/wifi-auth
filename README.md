@@ -51,6 +51,9 @@ sudo visudo
 www-data  ALL=(ALL)NOPASSWD:/sbin/iptables
 ```
 
+這個動作的目的是要讓 apache 在 linux 系統裡的身分(www-data)  
+有權限去執行 auth.cgi 裡面的 system() iptables 設定  
+
 ## 3. 匯入 mysql 資料
 
 匯入資料的 SQL 請參照 repository 內的 'db_init_sql.txt' 檔案內容  
