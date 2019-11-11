@@ -41,7 +41,7 @@ wlp2s0 是我內網網卡的 ID，新電腦可能都一樣，舊電腦可能會�
 
 ## 2. apache 權限設定
 
-apache 部份檔案需要手動設定  
+apache 部份相關檔案需要手動設定  
 ```bash
 sudo visudo
 ```
