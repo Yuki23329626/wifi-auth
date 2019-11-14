@@ -7,7 +7,7 @@ PATH=/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin:~/bin
 export PATH
 echo "\nHello there, it's a shell script for establishing a wifi access point~\n"
 
-# 設定網卡ID
+# 設定網卡ID(以下腳本會用到的變數)
 LAN_INTERFACE=wlp2s0
 WAN_INTERFACE=wlxd037453d9c6a
 
@@ -72,7 +72,7 @@ echo "\n-- start copying files --\n"
 cp auth.cpp /usr/lib/cgi-bin/
 cp auth.cgi /usr/lib/cgi-bin/
 cp makefile /usr/lib/cgi-bin/
-# 要先安裝完成 mysql 才能成功編譯，auth.cpp 會用到 mysql 的 library
+# 要先安裝完成 mysql 用的 library "libmysql++-dev" 才能成功編譯，auth.cpp 會用到 "libmysql++-dev"
 make
 sudo cp envvars /etc/apache2/
 sudo cp dhcpd.conf /etc/dhcp/
@@ -107,19 +107,22 @@ sudo service network-manager start
 
 #sudo /etc/init.d/dnsmasq restart
 
+# 允許 apache 啟用 cgi 的 module，要 restart 才會生效
 sudo a2enmod cgi
 sudo service apache2 restart
 
-# iptables 防火牆設定，有滿多是沒用的設定，本來想用類似 DNS 綁架的方式重導向驗證網頁，不知道怎麼設定~
+
 # 驗證網頁是: 10.10.0.1/index.html，應該也可以設定 /etc/hosts 來給他一個名稱
-# 以下設定的 code 取自 wifidog iptables 設定，一樣記得修改網卡ID
-# Reference url: http://blog.changyy.org/2017/02/captive-portal-iptables.html
+# 以下六行清空所有iptables的規則
 iptables -Z
 iptables -F
 iptables -X
 iptables -t nat -Z
 iptables -t nat -F
 iptables -t nat -X
+# iptables 防火牆設定，有滿多是沒用的設定，本來想用類似 DNS 綁架的方式重導向驗證網頁，不知道怎麼設定~
+# 以下設定的 code 取自 wifidog iptables 設定，一樣記得修改網卡ID
+# Reference url: http://blog.changyy.org/2017/02/captive-portal-iptables.html
 # iptables -P INPUT ACCEPT
 # iptables -P FORWARD ACCEPT
 # iptables -P OUTPUT ACCEPT
@@ -151,12 +154,14 @@ iptables -t nat -X
 # iptables -A WD_wlan0_Unknown -j REJECT --reject-with icmp-port-unreachable
 # iptables -A WD_wlan0_Validate -j ACCEPT
 
+# 把所有經過filter forward chain目標是 $WAN_INTERFACE 這個 interface的封包全部丟掉
 iptables -A FORWARD -o $WAN_INTERFACE -j REJECT
 
 
 # 允許 NAT 上的 IP 可以轉換成外部IP(規則:MASQUERADE)，與外網溝通
 iptables --table nat --append POSTROUTING --out-interface $WAN_INTERFACE -j MASQUERADE
 
+# 啟用hostapd服務
 hostapd /etc/hostapd/hostapd.conf
 
 exit 0
