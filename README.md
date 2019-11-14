@@ -35,8 +35,9 @@ lo 是 localhost 的介面
  - interfaces
  - isc-dhcp-server
  - wifi-ap.sh  
+ - NetworkManager.conf
 
-以上檔案都需要設定內網網卡 ID，只有 wifi-ap.sh 需要再設定外網網卡 ID  
+以上檔案都需要設定內網網卡 ID，只有 wifi-ap.sh 需要再設定外網網卡 ID，NetworkManager.conf 要新增 mac address  
 wlp2s0 是我內網網卡的 ID，新電腦可能都一樣，舊電腦可能會叫做 wlan0 之類的  
 
 ## 2. apache 權限設定
