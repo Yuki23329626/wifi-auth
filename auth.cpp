@@ -11,6 +11,7 @@ using namespace std;
 // 把網址裡面的兩個變數傳進來，拆成 username 跟 password 放進 map 裡，回傳 map<string, string>
 map<string, string> Parse(const string& qstr){
 	map<string, string> mapUser;
+	// 例如網址後面是 key1=value1&key2=value2 會被拆成 key1, value1 一組， key2, value2 一組
 	regex pattern("([\\w+%]+)=([^&]*)");
 	auto words_begin = sregex_iterator(qstr.begin(), qstr.end(), pattern);
 	auto words_end = sregex_iterator();
@@ -56,7 +57,8 @@ int main()
     cout << "</head>";
     cout << "<body>";
     cout << "<table border = \"1\" cellspacing = \"0\">";
- 
+
+		// 印出環境變數比較好觀察
     for (int i = 0; i < varNames.size(); ++i)
     {
         cout << "<tr><td>" << varNames[i] << "</td><td>";
@@ -71,7 +73,8 @@ int main()
     cout << "</table>";
     cout << "</body>";
     cout << "</html>";
-
+  
+	// mysql 連線的初始化設定
 	MYSQL mysql;
 	mysql_init(&mysql);
 	int res;
@@ -81,7 +84,7 @@ int main()
 	if(!mysql_real_connect(&mysql, "localhost", "root", "secret", "wifi_auth", 3306, NULL, 0)){
 		cout<< "\nError connecting to database\n" << mysql_error(&mysql) <<"\n\n";
 	}else{
-		cout<<"Connected!\n";
+		cout<<"MySQL database Connected!\n";
 		
 		//mysql_query(&mysql, "SET NAMES UTF8");
 
@@ -91,16 +94,20 @@ int main()
 		
 		//cout <<"<BR>mapUser.first: "<< mapUser.first <<"<BR>";
 		//cout <<"<BR>mapUser: "<< mapUser["name"] <<"<BR>";
+
+		// 印出網址裡的 "user" 對應的 value
 		auto iterUser = mapUser.find("user");
 		if(iterUser != mapUser.end()){
 			cout << "<BR>mapUser[\"user\"]: "<< iterUser->second <<"<BR>";
 		}
 		
+		// 印出網址裡的 "pass" 對應的 value
 		auto iterPass = mapUser.find("pass");
 		if(iterPass != mapUser.end()){
 			cout << "<BR>mapUser[\"password\"]: "<< iterPass->second <<"<BR>";
 		}
 
+		// SQL語法，找出跟網址裡一樣的 user name
 		mysql_query(&mysql, "use wifi_auth");
 		string dbQuery = "select * from user where name=\'"+ iterUser->second +"\'";
 
@@ -116,9 +123,12 @@ int main()
 					cout << "<TD>" << sql_row[2] << "</TD></TR>";
 				}*/
 				sql_row = mysql_fetch_row(result);
+
+				// 如果找到 user name 之後，比對成功的話，就會進入下面的 block，印出成功訊息並且設定 iptables
 				if((iterPass->second) == (sql_row[2])){
 					cout << "<BR>login success!<BR>";
 					string strRemoteAddr(getenv(varNames[3].c_str()));
+					// iptables 在 filter 的 forward chain 插入規則: 只要 source ip 跟 destination ip 是 remote address，就通過
 					string str1 = "sudo iptables -I FORWARD -s " + strRemoteAddr + " -j ACCEPT";
 					string str2 = "sudo iptables -I FORWARD -d " + strRemoteAddr + " -j ACCEPT";
 					cout << "<BR> str1 = " + str1 + "<BR>";
