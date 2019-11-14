@@ -8,6 +8,7 @@
 
 using namespace std;
 
+// 把網址裡面的兩個變數傳進來，拆成 username 跟 password 放進 map 裡，回傳 map<string, string>
 map<string, string> Parse(const string& qstr){
 	map<string, string> mapUser;
 	regex pattern("([\\w+%]+)=([^&]*)");
@@ -26,10 +27,10 @@ map<string, string> Parse(const string& qstr){
  
 int main()
 {
-
+    // 可以呼叫的環境變數
     string strNames[]={
-			"DOCUMENT_ROOT",
-			"GATEWAY_INTERFACE",
+      "DOCUMENT_ROOT",
+      "GATEWAY_INTERFACE",
       "HTTP_HOST",
       "REMOTE_ADDR",
       "REMOTE_PORT",
