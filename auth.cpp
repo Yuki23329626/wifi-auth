@@ -8,6 +8,8 @@
 
 using namespace std;
 
+// 因為我不想浪費時間學 perl，所以我用 c++ 來寫ˊˇˋ
+
 // 把網址裡面的兩個變數傳進來，拆成 username 跟 password 放進 map 裡，回傳 map<string, string>
 map<string, string> Parse(const string& qstr){
 	map<string, string> mapUser;

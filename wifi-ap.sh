@@ -120,6 +120,8 @@ iptables -X
 iptables -t nat -Z
 iptables -t nat -F
 iptables -t nat -X
+
+# 下面的暫時用不到了，留著作紀念
 # iptables 防火牆設定，有滿多是沒用的設定，本來想用類似 DNS 綁架的方式重導向驗證網頁，不知道怎麼設定~
 # 以下設定的 code 取自 wifidog iptables 設定，一樣記得修改網卡ID
 # Reference url: http://blog.changyy.org/2017/02/captive-portal-iptables.html
@@ -154,7 +156,7 @@ iptables -t nat -X
 # iptables -A WD_wlan0_Unknown -j REJECT --reject-with icmp-port-unreachable
 # iptables -A WD_wlan0_Validate -j ACCEPT
 
-# 把所有經過filter forward chain目標是 $WAN_INTERFACE 這個 interface的封包全部丟掉
+# 把所有經過 filter forward chain 目標是 $WAN_INTERFACE 這個 interface 的封包全部丟掉
 iptables -A FORWARD -o $WAN_INTERFACE -j REJECT
 
 
