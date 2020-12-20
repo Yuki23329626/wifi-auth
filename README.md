@@ -1,7 +1,7 @@
 # wifi-auth  
 Transform your laptop into a wifi AP with a login page.  
 
-## R
+## Requirements  
 soft ap in ubuntu 16.04  
 需要兩張網卡，一張給內網、一張給外網  
 
