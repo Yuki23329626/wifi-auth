@@ -12,11 +12,6 @@ soft ap in ubuntu 16.04
 
 ## 1. 一個指令搞定所有安裝 + iptables 設定
 
-總之就是先執行腳本,在bash輸入以下指令：
-```bash
-sudo sh wifi-ap.sh
-```
-
 關於 shell script 內用到的檔案，  
 都需要事先改好 network interface 的名稱  
 在我的電腦上 wlp2s0 是在內網的 interface  
@@ -39,6 +34,11 @@ lo 是 localhost 的介面
 
 以上檔案都需要設定內網網卡 ID，只有 wifi-ap.sh 需要再設定外網網卡 ID，NetworkManager.conf 要新增 mac address  
 wlp2s0 是我內網網卡的 ID，新電腦可能都一樣，舊電腦可能會叫做 wlan0 之類的  
+
+在設定完所有檔案的 interface id 之後，即可執行腳本:  
+```bash
+sudo sh wifi-ap.sh
+```
 
 ## 2. apache 權限設定
 
